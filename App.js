@@ -23,7 +23,7 @@ export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [pageSize, setPageSize] = useState(10); // Initial size
-  const [maxPageSize,setMaxPageSize] = useState(false); // Max size 100
+  const [maxPageSize, setMaxPageSize] = useState(false); // Max size 100
   const renderItem = useCallback(({ item, index }) => {
     return (
       <View style={{ width, justifyContent: 'center', alignItems: 'center' }}>
@@ -41,33 +41,48 @@ export default function App() {
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
             elevation: 5,
-            padding:20,
+            padding: 20,
             alignItems: 'center',
           }}
         >
-          <ScrollView style={{width:"100%"}}>
-          <FastImage
-            source={{ uri: item.avatar }}
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: 100,
-              borderColor: 'red',
-              borderWidth: 1,
-              resizeMode: 'cover',
-            }}
-          />
-          <Text>{item.uid}</Text>
-          <Text>nknlnknlnlnlnknlnlnlnlnlnlnlnlnlnlnknlkjljkjkj</Text>
-          <Text>{item.username}</Text>
-          <Text>{item.password}</Text>
-          <Text>
-            {item.first_name} {item.last_name}
-          </Text>
-          <Text>{item.email}</Text>
+          <ScrollView style={{ width: "100%" }}>
+            <FastImage
+              source={{ uri: item.avatar }}
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 100,
+                borderColor: 'red',
+                borderWidth: 1,
+                resizeMode: 'cover',
+              }}
+            />
+            <Text style={{ fontSize: 16, paddingVertical: 10, marginTop: 10 }}>
+              <Text style={{ fontWeight: 'bold', textTransform: "uppercase" }}>UserId:</Text>
+              <Text >{item.uid}</Text>
+            </Text>
+            <Text style={{ fontSize: 16, paddingVertical: 10 }}>
+              <Text style={{ fontWeight: 'bold', textTransform: "uppercase" }}>UserName:</Text>
+              <Text >{item.username}</Text>
+            </Text>
+            <Text style={{ fontSize: 16, paddingVertical: 10 }}>
+              <Text style={{ fontWeight: 'bold', textTransform: "uppercase" }}>Password:</Text>
+              <Text >{item.password}</Text>
+            </Text>
+            <Text style={{ fontSize: 16, paddingVertical: 10 }}>
+              <Text style={{ fontWeight: 'bold', textTransform: "uppercase" }}>Full Name:</Text>
+              <Text>
+                {item.first_name} {item.last_name}
+              </Text>
+            </Text>
+            <Text style={{ fontSize: 16, paddingVertical: 10 }}>
+              <Text style={{ fontWeight: 'bold', textTransform: "uppercase" }}>UserId:</Text>
+              <Text>{item.email}</Text>
+
+            </Text>
           </ScrollView>
           <Text style={styles.index}>{index}</Text>
-          
+
         </View>
       </View>
     );
@@ -80,18 +95,18 @@ export default function App() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      if(pageSize <= 80){
-      const result = await fetch(
-        `https://random-data-api.com/api/users/random_user?size=${pageSize}`
-      );
-      const response = await result.json();
-      setData(response);
+      if (pageSize <= 80) {
+        const result = await fetch(
+          `https://random-data-api.com/api/users/random_user?size=${pageSize}`
+        );
+        const response = await result.json();
+        setData(response);
         setPageSize((prevSize) => prevSize + 10);
       }
-      else{
+      else {
         setMaxPageSize(true);
       }
-       // Increase page size
+      // Increase page size
     } catch (err) {
       setPageSize(10);
       console.log(err);
@@ -140,38 +155,38 @@ export default function App() {
             { useNativeDriver: false }
 
           )
-          
-        }
+
+          }
           onEndReached={endReached}
           onEndReachedThreshold={0.1}
           ListFooterComponent={itemSeparatorComponent}
         />
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button}  onPress={() => {
+          <TouchableOpacity style={styles.button} onPress={() => {
             const previousIndex = currentIndex - 1;
-            if(previousIndex>=0){
-                flatListRef.current.scrollToIndex({ index: previousIndex, animated: true });
-                setCurrentIndex(previousIndex);
+            if (previousIndex >= 0) {
+              flatListRef.current.scrollToIndex({ index: previousIndex, animated: true });
+              setCurrentIndex(previousIndex);
             }
-  }}>
+          }}>
             <Text>Previous</Text>
           </TouchableOpacity>
           <TouchableOpacity
-  style={styles.button}
-  onPress={() => {
-    const nextIndex = currentIndex + 1;
-    if (nextIndex < data.length) {
-      flatListRef.current.scrollToIndex({ index: nextIndex, animated: true });
-      setCurrentIndex(nextIndex);
-    }
-    else{
-      setLoading(true);
-      endReached();
-    }
-  }}
->
-  <Text>Next</Text>
-</TouchableOpacity>
+            style={styles.button}
+            onPress={() => {
+              const nextIndex = currentIndex + 1;
+              if (nextIndex < data.length) {
+                flatListRef.current.scrollToIndex({ index: nextIndex, animated: true });
+                setCurrentIndex(nextIndex);
+              }
+              else {
+                setLoading(true);
+                endReached();
+              }
+            }}
+          >
+            <Text>Next</Text>
+          </TouchableOpacity>
 
         </View>
         <StatusBar style="auto" />
